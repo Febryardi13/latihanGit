@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daftar User</title>
+<style>
+    #user table{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    #user tr:nth-child(even){
+        background-color:white;
+    }
+
+    #user thead{
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #498ee2;
+        color: white;
+    
+    }
+
+    #user td, #user thead{
+        border: 1px solid #528dd5;
+        padding: 8px;
+        font-family: sans-serif;
+    }
+
+    input[type=text], select{
+        width: 70%; /*Untuk panjang kolom textfield*/
+        padding: 5px 10px; /*Untuk lebar & jarak antara tulisan dengan tepi garis kolom textfield*/
+        margin: 5px 0; /*Untuk margin antar label dgn kolom textfield*/
+        display: inline-block;
+        border: 1px solid #cccccc;
+        border-radius: 4px; /*Untuk lengkung siku kolom textfield*/
+        box-sizing: border-box;
+    }
+
+    input[type=number], select{
+        width: 70%; /*Untuk panjang kolom textfield*/
+        padding: 5px 10px; /*Untuk lebar & jarak antara tulisan dengan tepi garis kolom textfield*/
+        margin: 5px 0; /*Untuk margin antar label dgn kolom textfield*/
+        display: inline-block;
+        border: 1px solid #cccccc;
+        border-radius: 4px; /*Untuk lengkung siku kolom textfield*/
+        box-sizing: border-box;
+    }
+
+    input[type=submit]:hover{
+        background-color: #4381b6;
+    }
+
+    input[type=radio]{
+        background-color: #1c6eb6;
+        color: white;
+        padding: 8px 14px;
+        margin: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+    button[type=button]{
+        
+        background-color: #528dd5;
+        color: white;
+        padding: 6px 14px;
+        margin: 6px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button[type=submit]:hover{
+        background-color: #4381b6;
+    }
+
+    div{
+        width: 25%;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+</style>   
+
+</head>
+<body>
+    <center>
+        <h2 style="font-family: sans-serif;">Daftar User</h2>
+        <div>
+            <form action="">
+                <input id="nama" type="text" placeholder="Masukan nama..." class="addUser"><br>
+                <input id="usia" type="number" placeholder="Masukan usia..." class="addUser"><br>
+                <label for="kelamin">Kelamin</label>
+                <input id="radio1" type="radio" name="sex" value="pria">Pria <input id="radio2" type="radio" name="sex" value="wanita">Wanita <br>
+                <input id="work" type="text" placeholder="Masukan pekejaan..." class="addUser"><br>
+                <button onclick="addData()" type="button">Submit</button>
+                <h3 style="font-family: sans-serif;">Sort Berdasarkan</h3>
+                <button onclick="sortNama()" type="button">Nama</button> <button onclick="sortUsia()" type="button">Usia</button> <button onclick="sortKelamin()" type="button">Kelamin</button> <button onclick="sortPekerjaan()" type="button">Pekerjaan</button>
+            </form>
+        </div>
+        
+            <h2 style="font-family: sans-serif;">List User Terdaftar</h2>
+            <table id="user">
+                <thead>
+                    <tr>
+                        <td>No.</td>
+                        <td>Nama</td>
+                        <td>Usia</td>
+                        <td>Jenis Kelamin</td>
+                        <td>Pekerjaan</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+    </center>
+</body>
+
+<script>
+    //Digunakan untuk deskripsi awal property apa saja yang akan di add pada list user
+    class user {
+    constructor(namaUser, usiaUser, kelaminUser, pekerjaanUser){
+        this.nama      = namaUser,
+        this.usia      = usiaUser,
+        this.kelamin   = kelaminUser,
+        this.pekerjaan = pekerjaanUser
+    }
+} 
+    // Membuat penampung data atas data yang dipush berdasarkan property object pada class
+    var listUser = [new user ("","","","")]
+    //console.log(listUser[0])
+
+    // Function add data to class user with property objectnya
+    const addData = () =>{
+        var input        = document.getElementsByClassName('addUser')
+        var newNama      = input[0].value
+        var newUsia      = input[1].value
+        var newPekerjaan = input[2].value
+        var newKelamin1   = document.getElementsByName('sex')[0].checked
+        var newKelamin2   = document.getElementsByName('sex')[1].checked
+        var newKelamin=''
+        if(newKelamin1 == true){
+            newKelamin = 'Pria'
+        }else if (newKelamin2 == true){
+            newKelamin = 'Wanita'
+        }else{
+            newKelamin ='TIDAK DIINPUT'
+        }
+        // console.log(newNama)
+        listUser.push(new user(newNama,newUsia,newKelamin,newPekerjaan))
+        //console.log(listUser[1])
+        showData(listUser)
+        clear()
+    }
+
+    // Function untuk menampilkan data dalam array object class
+    const showData =(namaUser)=>{
+       var indexShow = -1
+       output=''
+        namaUser.forEach((value,index) =>{
+            if(indexShow = index){
+            output+=`
+                     <tr id="index">
+                        <td>${index}</td>
+                        <td>${value.nama}</td>
+                        <td>${value.usia}</td>
+                        <td>${value.kelamin}</td>
+                        <td>${value.pekerjaan}</td>
+                    </tr>`
+        document.getElementsByTagName('tbody')[0].innerHTML=output
+            }
+        })
+    }
+    showData(listUser)
+
+    // Function for reset input textfiled
+    const clear =()=>{
+        document.getElementById('nama').value=''
+        document.getElementById('usia').value=''
+        document.getElementsByName('sex')[0].checked=false
+        document.getElementsByName('sex')[1].checked=false
+        document.getElementById('work').value=''
+    }
+
+    // ================================= FUNCTION SORT BY ASC ===================================
+
+    const sortNama = () =>{
+        listUser.sort(function(x,y){
+        if(x.nama < y.nama){return -1}
+        if(x.nama > y.nama){return 1}
+        })
+        //console.log(listUser)
+        showData(listUser)
+    }
+
+    const sortUsia = () =>{
+        listUser.sort(function(x,y){
+        if(x.usia < y.usia){return -1}
+        if(x.usia > y.usia){return 1}
+        })
+        showData(listUser)
+    }
+
+    const sortKelamin = () =>{
+        listUser.sort(function(x,y){
+            if(x.kelamin < y.kelamin){return -1}
+            if(x.kelamin > y.kelamin){return 1}
+        })
+        showData(listUser)
+    }
+
+    const sortPekerjaan = ()=>{
+        listUser.sort(function(x,y){
+            if(x.pekerjaan < y.pekerjaan){return -1}
+            if(x.pekerjaan > y.pekerjaan){return 1}
+        })
+        showData(listUser)
+    }
+
+</script>
+
+</html>
