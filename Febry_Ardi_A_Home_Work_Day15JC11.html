@@ -1,0 +1,177 @@
+<html>
+    <head>
+        <style>
+            table, tr, td{
+                border: 1px solid ;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h2>Aplikasi E-Comerce Sederhana</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <td> No </td>
+                        <td> Produk</td>
+                        <td> Harga </td>
+                        <td> Gambar</td>
+                        <td> Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table><br><br>
+            <h3 id="notifKeranjang"></h3> <br>
+            <p id="notifPembayaran"></p> <br><br>
+            <table>
+
+            </table><br>
+            <p id="out"></p><br><br>
+            <p id="timer"></p>
+            <table>
+
+            </table>
+        </center>
+    </body>
+    <script>
+        class Item{
+            constructor(produk, harga, gambar){
+                this.produk = produk,
+                this.harga = harga,
+                this.gambar = gambar
+            }
+        }
+        var Data=[
+            new Item('Ultra Milk', 5000 ,'https://cs1.alfacart.com/product/1/A13170001041_1.jpg'),
+            new Item('Fitbar', 3500, 'https://www.kalbestore.com/media/catalog/product/cache/1/thumbnail/600x/9df78eab33525d08d6e5fb8d27136e95/i/s/isi_5_choco_tengah_1.jpg'),
+            new Item('Sarden', 10000, 'https://cf.shopee.co.id/file/23382da57f1bec0c525980683c023bde')
+        ]
+        const printData=(para)=>{
+            var output = ''
+            for(i=0 ; i < para.length;i++){
+                output+= `<tr>
+                        <td>${i+1}.</td>
+                        <td>${para[i].produk}</td>
+                        <td>${para[i].harga}</td>
+                        <td><img src=${para[i].gambar} height='100px'/></td>
+                        <td><input type="button" value="Add to Cart" onclick="btnAddToCart(${i})"/> </td>
+                    </tr>`
+            }
+            document.getElementsByTagName("tbody")[0].innerHTML=output
+        }
+        printData(Data)
+        var cart=[]       
+        var inDelete=-1
+        const printCart=(para)=>{
+            var output=''
+            for(i=0 ; i<para.length ; i++){
+               
+                output+=`<tr>
+                    <td>${i+1}.</td>
+                    <td>${para[i].produk}</td>
+                    <td>${para[i].harga}</td>
+                    <td><img src=${para[i].gambar} height='100px'/></td>
+                    <td><input type="button" value="Delete" onclick="btnDelete(${i})"/></td>
+                </tr>`
+                
+            }
+            document.getElementsByTagName('table')[1].innerHTML=output
+        }
+        const checkCart=()=>{
+            if(cart.length==0){
+                document.getElementById('notifKeranjang').innerHTML='Keranjang Anda Kosong !'
+                document.getElementById("out").innerHTML=``
+            }
+        }
+        checkCart()
+        const DescPrint=()=>{
+            document.getElementById("notifKeranjang").innerHTML=` Total item yang anda pilih ada ${cart.length}`
+            document.getElementById('notifPembayaran').innerHTML=` Total Keranjang Anda Rp. ${totalHarga(cart)}`
+        }
+        
+        const btnAddToCart=(i)=>{
+            cart.push(Data[i])
+            console.log(cart)
+            printCart(cart)
+            if (cart.length>0){
+                DescPrint()
+                document.getElementById("out").innerHTML=`<input type="button" value="Check Out" onclick="btnCheckOut(), start()"/>`            
+            }
+        }
+        
+        const totalHarga=(index)=>{
+            var total = 0
+            for(i=0 ; i < index.length; i++){
+                total+=cart[i].harga
+            }
+            return total
+        }
+        const btnDelete=(index)=>{
+            cart.splice(index,1)                    
+            printCart(cart)
+            checkCart()
+            DescPrint()
+          }   
+    
+        const btnCheckOut=()=>{
+            var output=`
+                <tr>
+                    <td><input type="number" id="bayar"></td>
+                    <td><button value="pay" onclick='btnPay()'> Pay </button></td>
+                </tr>`
+            document.getElementsByTagName('table')[2].innerHTML=output
+           
+        }  
+        const btnPay=()=>{
+            var bayar = document.getElementById("bayar").value
+            var total = totalHarga(cart) 
+            var output = '' 
+            if(bayar<total){
+                output='Kurang BAMBANG ! ! !'
+                alert(output)
+            } else if(bayar==total){
+                output = "Transaksi Anda Berhasil"
+                alert(output)
+                restart()
+            } else{
+                output = `Transaksi Anda Berhasil, Kembalian Anda Rp ${(bayar-total)}`
+                alert(output)
+                restart()
+            }
+        }
+        var setTimer = 50
+        var time = setTimer
+        var timer
+        const start=()=>{
+            // time+=1
+            timer= setInterval(Waktu, 500)
+        }
+        const Waktu=()=>{
+            time-=1
+            document.getElementById('timer').innerHTML=` Waktu Anda Tersisa ${time}`
+            console.log(time)
+            if(time<=0){
+                clearInterval(timer)
+                document.getElementById('timer').innerHTML= 'Waktu Anda Habis'
+                restart()
+            }
+        }
+        const restart=()=>{
+            clearInterval(timer)
+            document.getElementById('notifKeranjang').innerHTML='Keranjang Anda Kosong !'
+            document.getElementById("out").innerHTML=``
+            document.getElementsByTagName('table')[1].innerHTML=''
+            document.getElementById("notifPembayaran").innerHTML=''
+            document.getElementsByTagName('table')[2].innerHTML=''
+            document.getElementById("timer").innerHTML=''
+            cart.splice(0,cart.length)
+            time = setTimer
+            console.log(time)
+            
+        }
+        
+    </script>
+</html>
