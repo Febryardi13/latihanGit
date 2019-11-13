@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Drawing Tools</title>
+
+    <style>
+        .center{
+            margin:auto;
+            width: 30%;
+            border: 2px solid black;
+            padding: 10px;
+            text-align: left;
+            background: rgb(95, 168, 231);
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h2>Drawing Tools</h2>
+        <div class="center" >
+            <p>1. Persegi</p>
+            <p>2. Segitiga Siku2 Rata Kiri</p>
+            <p>3. Segitiga Siku2 Rata Kanan</p>
+            <p>Jenis Bangunan</p>
+            <input type="number" name="jenisBangunan" id="jenisBangunan" placeholder="Input jenis bangunan...">
+            <p>Ukuran</p>
+            <input type="number" name="ukuran" id="ukuran" placeholder="Input ukuran..."><br><br>
+            <button type="button" onclick="onBtnCreate()">CREATE</button><br>
+            <p id="output"></p>
+            <p id="output2" style="text-align: right;"></p>
+        </div>
+    </center>
+</body>
+<script>
+
+    const onBtnCreate =()=>{
+        var jenisBangun  = parseInt(document.getElementById('jenisBangunan').value)
+        var ukuranBangun = parseInt(document.getElementById('ukuran').value)
+        
+        if(jenisBangun == 1){
+            var output=''
+            for(i=1;i<=ukuranBangun;i++){
+                for(j=1; j <= ukuranBangun;j++){
+                    output = document.getElementById('output').innerHTML += `*`
+                }
+                    output = document.getElementById('output').innerHTML += `<br>`
+            }
+        }else if(jenisBangun == 2){
+            var output =''
+            for(i=0; i< ukuranBangun;i++){
+                for(j=0; j<=i;j++){
+                    output = document.getElementById('output').innerHTML += `*`
+                }
+                if(i<ukuranBangun-1){
+                    output = document.getElementById('output').innerHTML += `<br>`
+                }
+            }
+            return output
+        }else if(jenisBangun == 3){
+            var output3 =''
+           for(i=1;i<=ukuranBangun;i++){
+               for(j=ukuranBangun-1 ;j>=i ;j--){
+                    output3 = document.getElementById('output2').innerHTML += `&nbsp;`
+               }
+               for(k=1;k<=i;k++){
+                    output3 = document.getElementById('output2').innerHTML += `*`
+               }
+               output3 = document.getElementById('output2').innerHTML += `<br>`
+           }
+        }   
+    }
+    
+</script>
+</html>
